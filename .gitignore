@@ -1,0 +1,16 @@
+# Node.js dependencies
+node_modules/
+
+# 환경설정 파일
+.env
+
+# 로그 파일
+npm-debug.log*
+
+# 빌드된 파일
+build/
+dist/
+
+# IDE 관련 파일
+.vscode/
+.idea/
