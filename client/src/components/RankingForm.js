@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const RankingForm = () => {
+const RankingForm = ({onAddRanking}) => {
   const [userName, setUserName] = useState('');
   const [userScore, setUserScore] = useState(''); // 점수 상태 추가
   const [message, setMessage] = useState('');
@@ -15,12 +15,15 @@ const RankingForm = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/ranking', {
+      const newRanking = {
         name: userName,
-        score: userScore,
-        date: new Date().toISOString()
-      });
-      setMessage(response.data.message);
+        score: parseInt(userScore, 10),
+        date: new Date().toISOString(), // 현재 날짜
+      };
+  
+      // 부모 컴포넌트의 addRanking 호출
+      onAddRanking(newRanking);
+
       setUserName('');
       setUserScore('');
     } catch (error) {
