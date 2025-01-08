@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const RankingForm = ({onAddRanking}) => {
   const [userName, setUserName] = useState('');
@@ -23,7 +22,6 @@ const RankingForm = ({onAddRanking}) => {
   
       // 부모 컴포넌트의 addRanking 호출
       onAddRanking(newRanking);
-
       setUserName('');
       setUserScore('');
     } catch (error) {
@@ -34,7 +32,8 @@ const RankingForm = ({onAddRanking}) => {
 
   return (
     <div>
-      <h2>랭킹 입력</h2>
+
+      <h2>form</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>사용자 이름:</label>
