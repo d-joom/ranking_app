@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import RankingForm from './components/RankingForm.js';
 import RankingList from './components/RankingList.js';
 
+// 상태를 관리할 Context 생성
+export const SocketContext = createContext();
+
 function App() {
 
   const [rankings, setRankings] = useState([]); // 랭킹 데이터 상태
   const [newRanking, setNewRanking] = useState(null);
-  const [showList, setShowList] = useState(false);
+  const [showList, setShowList] = useState(false);  
+  const [refresh, setRefresh] = useState(false); // 새로 고침 상태
+  const [socket, setSocket] = useState(null);
+  const [messageSent, setMessageSent] = useState(false);  // 메시지 전송 여부 추적
 
    // 랭킹 데이터를 가져오는 함수
    const fetchRankings = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/ranking');
-      setRankings(response.data); // 받아온 데이터를 rankings 상태에 저장
+      if (JSON.stringify(response.data) !== JSON.stringify(rankings)) {
+        setRankings(response.data);
+      }
     } catch (error) {
       console.error('Error fetching rankings:', error);
     }
@@ -25,6 +33,13 @@ function App() {
       fetchRankings();
     }, []);
 
+    useEffect(() => {
+      console.log("messageSent --- " + messageSent);
+      if(messageSent){
+        // window.location.reload();
+      }
+    }, [messageSent]);
+
       // 데이터를 추가할 때 호출되는 함수
     const addRanking = async (newRanking) => {
       try {
@@ -34,16 +49,21 @@ function App() {
         await fetchRankings();
 
         setNewRanking(newRanking); // 새로운 랭킹을 state로 저장
-        setRankings((prevRankings) => [...prevRankings, newRanking]); // 랭킹 목록에 추가
         setShowList(false); // 새 데이터가 추가되면 list는 숨긴다
+        
+        console.log(JSON.stringify(newRanking));
+        socket.send(JSON.stringify(newRanking));
 
+        setTimeout(() => {
+          setRefresh(false);
+        }, 1000);
       } catch (error) {
         console.error('Error adding ranking:', error);
       }
     };
 
 
-      // 새 랭킹 추가 후 20초 후에 리스트 보여주기
+    // 새 랭킹 추가 후 20초 후에 리스트 보여주기
     useEffect(() => {
       if (newRanking) {
         const timer = setTimeout(() => {
@@ -53,31 +73,64 @@ function App() {
       }
     }, [newRanking]);
 
-  return (
-    <Router>
-      <div>
-        {/* 네비게이션 메뉴 */}
-        <nav>
-          <ul>
-            <li>
-              <Link to="/form">점수 입력</Link>
-            </li>
-            <li>
-              <Link to="/list">랭킹 목록</Link>
-            </li>
-          </ul>
-        </nav>
+    useEffect(() => {
+      // 웹소켓 연결
+      const ws = new WebSocket('ws://localhost:8080');
+      
+      ws.addEventListener('open', () => {
+        console.log('WebSocket connection established');
+      });
+  
+      // socket 상태 업데이트
+      setSocket(ws);
+  
+      // 웹소켓 연결이 종료되었을 때의 처리
+      ws.addEventListener('close', () => {
+        console.log('WebSocket connection closed (App.js)');
+      });
+  
+      return () => {
+        if (ws) {
+          ws.close();  // 컴포넌트가 unmount될 때 소켓 연결 종료
+        }
+      };
+    }, []);
 
-        {/* 라우트 설정 */}
-        <Routes>
-          <Route path="/form" element={<RankingForm onAddRanking={addRanking} />} />
-          <Route
-          path="/result"
-          element={<RankingList rankings={rankings} newRanking={newRanking} showList={true} />}
-        />
-        </Routes>
-      </div>
-    </Router>
+    useEffect(() => {
+      console.log('App.js에서 messageSent:', messageSent);
+
+    }, [messageSent]);
+
+  return (
+    <SocketContext.Provider value={{ messageSent }}>
+      <Router>
+        <div>
+          {/* 네비게이션 메뉴 */}
+          <nav>
+            <ul>
+              <li>
+                <Link to="/form">점수 입력</Link>
+              </li>
+              <li>
+                <Link to="/result">랭킹 목록</Link>
+              </li>
+            </ul>
+          </nav>
+            {/* 라우트 설정 */}
+            <Routes>
+              <Route path="/form" element={<RankingForm onAddRanking={addRanking} />} />
+              <Route
+              path="/result"
+              key={messageSent}
+              element={<>
+                {console.log('App.js에서 전달되는 messageSent:', messageSent)}
+                <RankingList rankings={rankings} newRanking={newRanking} fetchRankings={fetchRankings}/>
+              </>}
+            />
+            </Routes>
+        </div>
+      </Router>
+    </SocketContext.Provider>
   );
 }
 
