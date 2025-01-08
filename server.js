@@ -5,6 +5,10 @@ const path = require('path');
 const cors = require('cors');
 const moment = require('moment-timezone');
 const fastcsv = require('fast-csv');
+const chalk = require('chalk');
+const figlet = require('figlet');
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
 
 const app = express();
 const upload = multer({ dest: 'uploads/' });  // 파일 업로드 위치 설정
@@ -13,6 +17,24 @@ app.use(cors());
 
 //JSON 형식의 요청 본문을 처리하기 위한 미들웨어 추가
 app.use(express.json());
+
+wss.on('connection', (ws) => {
+  console.log('New connection established');
+
+  // 클라이언트로부터 메시지를 받으면
+  ws.on('message', (message) => {
+    console.log('received: %s', message);
+    // 모든 클라이언트에 메시지 전송
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type: 'message', content: message }));
+      }
+    });
+  });
+
+  // 서버에서 클라이언트에게 JSON 형식으로 응답
+  ws.send(JSON.stringify({ type: 'greeting', content: 'Hello! Connected to the WebSocket server' }));
+});
 
 // 실행 파일 환경에 따라 경로 설정
 const isPkg = typeof process.pkg !== 'undefined';
@@ -86,7 +108,16 @@ const readRankingsFromCSV = () => {
 app.get('/api/ranking', async (req, res) => {
   try {
     const rankings = await readRankingsFromCSV(); // CSV에서 랭킹 데이터 읽기
-    res.json(rankings); // 배열을 JSON으로 클라이언트에 반환
+
+    // 정렬: 특정 키(예: score)를 기준으로 내림차순 정렬
+    const sortedRankings = rankings.sort((a, b) => {
+      return b.Score - a.Score; // 내림차순 (큰 값이 먼저)
+    });
+
+     // 상위 10개 항목만 추출
+     const topRankings = sortedRankings.slice(0, 10);
+
+    res.json(topRankings); // 배열을 JSON으로 클라이언트에 반환
   } catch (error) {
     console.error('Error reading CSV:', error);
     res.status(500).json({ message: 'Error reading ranking data' });
@@ -104,5 +135,20 @@ app.get('*', (req, res) => {
 // 서버 실행
 const PORT = 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    // console.log('\x1b[32m\x1b[1m===========================\x1b[0m');
+    // console.log(`\x1b[31m\x1b[1mCAPTAIN AMERICA SERVER running on port ${PORT}... \x1b[0m`);
+    // console.log('\x1b[32m\x1b[1m===========================\x1b[0m');
+    console.log(chalk.green(`서버가 http://localhost:${PORT}에서 구동 중입니다.`));
+});
+
+// 화려한 텍스트 출력
+figlet('CAPTAIN AMERICA', { font: 'slant' }, (err, data) => {
+  if (err) {
+    console.log('Error generating ASCII art');
+    return;
+  }
+
+  console.log(chalk.blue(data));  // 파란색 아스키 아트 텍스트 출력
+  console.log(chalk.green.bold('SERVER running on 5000...'));  // 초록색, 굵은 글씨
+  console.log(chalk.yellow('=============================='));  // 노란색 구분선
 });
