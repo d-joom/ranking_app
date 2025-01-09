@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RankingForm = ({onAddRanking}) => {
+const RankingForm = ({onAddRanking, goList}) => {
   const [userName, setUserName] = useState('');
   const [userScore, setUserScore] = useState(''); // 점수 상태 추가
   const [message, setMessage] = useState('');
@@ -55,6 +55,7 @@ const RankingForm = ({onAddRanking}) => {
         </div>
         <button type="submit">제출</button>
       </form>
+      <button onClick={goList}>Go to list</button>
       {message && <p>{message}</p>}
     </div>
   );
