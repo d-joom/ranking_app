@@ -67,12 +67,38 @@ app.post('/api/ranking', (req, res) => {
       return res.status(400).json({ message: '이름과 점수를 모두 입력해주세요.' });
     }
 
+     // 이름 중복 처리
+     let uniqueName = name;
+      // 파일 읽기
+  fs.readFile(csvFilePath, 'utf8', (err, fileData) => {
+    if (err) {
+      console.error('파일 읽기 중 오류 발생:', err);
+      return res.status(500).json({ message: '파일 읽기 중 오류가 발생했습니다.' });
+    }
+
+    // CSV 데이터 파싱
+    const existingNames = fileData
+      .trim()
+      .split('\n')
+      .map((line) => line.split(',')[0]); // 첫 번째 열은 이름
+
+    if (existingNames.includes(name)) {
+      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let index = 0;
+      while (existingNames.includes(uniqueName)) {
+        uniqueName = `${name}${alphabet[index]}`;
+        index++;
+        if (index >= alphabet.length) {
+          return res.status(500).json({ message: '중복 처리 중 알파벳이 부족합니다.' });
+        }
+      }
+    }
     // 한국 시간으로 변환 (서버에서 할 경우)
     const koreaTime = moment(date).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss'); // 한국 시간으로 포맷팅
 
-    console.log(`\n{name: '${name}',score: '${score}',date: '${koreaTime}'}`);
+    console.log(`\n{name: '${uniqueName}',score: '${score}',date: '${koreaTime}'}`);
 
-    const data = `\n${name},${score},${koreaTime}`
+    const data = `\n${uniqueName},${score},${koreaTime}`
 
     // 파일에 데이터 추가
     fs.appendFile(csvFilePath, data, (err) => {
@@ -83,7 +109,8 @@ app.post('/api/ranking', (req, res) => {
       }
     });
 
-    res.status(200).json({ message: 'Ranking added successfully' });
+    res.status(200).json({ message: `{'message' : 'Ranking added successfully','uniqueName':'${uniqueName}'}` });
+  })
 
   });
 

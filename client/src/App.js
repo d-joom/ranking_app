@@ -44,11 +44,15 @@ function App() {
     const addRanking = async (newRanking) => {
       try {
         // 서버에 새로운 데이터 전송
-        await axios.post('http://localhost:5000/api/ranking', newRanking);
+        const response = await axios.post('http://localhost:5000/api/ranking', newRanking);
+        console.log(response.data.message);
+        const obj = JSON.parse(response.data.message);
+        console.log(obj);
+        // setNewRanking({name: obj.uniqueName, score:newRanking.score});
+        setNewRanking(newRanking);
         // 최신 데이터를 다시 가져옴
         await fetchRankings();
 
-        setNewRanking(newRanking); // 새로운 랭킹을 state로 저장
         setShowList(false); // 새 데이터가 추가되면 list는 숨긴다
         
         console.log(JSON.stringify(newRanking));
@@ -61,6 +65,10 @@ function App() {
         console.error('Error adding ranking:', error);
       }
     };
+
+    const goList = async() => {
+      socket.send(`{"name":"goList"}`);
+    }
 
 
     // 새 랭킹 추가 후 20초 후에 리스트 보여주기
@@ -118,7 +126,7 @@ function App() {
           </nav>
             {/* 라우트 설정 */}
             <Routes>
-              <Route path="/form" element={<RankingForm onAddRanking={addRanking} />} />
+              <Route path="/form" element={<RankingForm onAddRanking={addRanking} goList={goList}/>} />
               <Route
               path="/result"
               key={messageSent}
