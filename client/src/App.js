@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 import RankingForm from './components/RankingForm.js';
 import RankingList from './components/RankingList.js';
 
@@ -15,6 +16,8 @@ function App() {
   const [refresh, setRefresh] = useState(false); // 새로 고침 상태
   const [socket, setSocket] = useState(null);
   const [messageSent, setMessageSent] = useState(false);  // 메시지 전송 여부 추적
+
+
 
    // 랭킹 데이터를 가져오는 함수
    const fetchRankings = async () => {
@@ -55,7 +58,7 @@ function App() {
 
         setShowList(false); // 새 데이터가 추가되면 list는 숨긴다
         
-        console.log(JSON.stringify(newRanking));
+        console.log("socket : " + JSON.stringify(newRanking));
         socket.send(JSON.stringify(newRanking));
 
         setTimeout(() => {
@@ -114,7 +117,7 @@ function App() {
       <Router>
         <div>
           {/* 네비게이션 메뉴 */}
-          <nav>
+          {/* <nav>
             <ul>
               <li>
                 <Link to="/form">점수 입력</Link>
@@ -123,7 +126,7 @@ function App() {
                 <Link to="/result">랭킹 목록</Link>
               </li>
             </ul>
-          </nav>
+          </nav> */}
             {/* 라우트 설정 */}
             <Routes>
               <Route path="/form" element={<RankingForm onAddRanking={addRanking} goList={goList}/>} />
@@ -131,7 +134,6 @@ function App() {
               path="/result"
               key={messageSent}
               element={<>
-                {console.log('App.js에서 전달되는 messageSent:', messageSent)}
                 <RankingList rankings={rankings} newRanking={newRanking} fetchRankings={fetchRankings}/>
               </>}
             />

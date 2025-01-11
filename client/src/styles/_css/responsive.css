@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+/****************************************/ 
+/* Name: KIM BO REUM
+/* PART: HIDEEP RESPONSIVE CONTETNS STYLE
+/* Version: 1.0
+/****************************************/
+
+
+#login_page {width: 100%; min-height: calc(100vh - 110px); padding: 30px 0 70px 0;}
+#login_page .input__wrap {margin-top: 0}
+#login_page .inner_section {margin-top: 40px;}
+#login_page .comm_btns {margin-top: 10px;}
+
+
+#login_page .input_form__informaion {padding-left: 90px;}
+#login_page .input_form__informaion dt {font-size: 15px; top: 2px}
+#login_page .input_form__informaion dd {margin-top: 10px}
+
+
+#login_page.final {padding: 0; }
+#login_page.final h6 {text-align: center; padding: 100px 0}
+
+@media all and (max-width:768px){
+	#login_page {min-height: calc(100vh - 100px);}
+}

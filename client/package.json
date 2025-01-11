@@ -6,8 +6,10 @@
     "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "cra-template": "1.2.0",
+    "jquery": "^3.7.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^4.2.4"
