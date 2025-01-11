@@ -109,7 +109,7 @@ app.post('/api/ranking', (req, res) => {
       }
     });
 
-    res.status(200).json({ message: `{'message' : 'Ranking added successfully','uniqueName':'${uniqueName}'}` });
+    res.status(200).json({ message: `{"message" : "Ranking added successfully","uniqueName":"${uniqueName}"}` });
   })
 
   });
@@ -136,15 +136,16 @@ app.get('/api/ranking', async (req, res) => {
   try {
     const rankings = await readRankingsFromCSV(); // CSV에서 랭킹 데이터 읽기
 
-    // 정렬: 특정 키(예: score)를 기준으로 내림차순 정렬
+    // 정렬: score 기준 내림차순 정렬, 동일 score일 경우 timestamp 기준 내림차순 정렬
     const sortedRankings = rankings.sort((a, b) => {
-      return b.Score - a.Score; // 내림차순 (큰 값이 먼저)
+      if (b.Score === a.Score) {
+        // 동일 score일 경우 timestamp 비교 (내림차순)
+        return new Date(b.Date) - new Date(a.Date);
+      }
+      return b.Score - a.Score; // score 기준 내림차순
     });
 
-     // 상위 10개 항목만 추출
-     const topRankings = sortedRankings.slice(0, 10);
-
-    res.json(topRankings); // 배열을 JSON으로 클라이언트에 반환
+    res.json(sortedRankings); // 배열을 JSON으로 클라이언트에 반환
   } catch (error) {
     console.error('Error reading CSV:', error);
     res.status(500).json({ message: 'Error reading ranking data' });

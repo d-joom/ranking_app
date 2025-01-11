@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+/****************************************/ 
+/* Name: KIM BO REUM
+/* PART: WEB FONT 
+/* Version: 1.0
+/****************************************/
+
+/*========== AmericanCaptainPatrius ==========*/
+@font-face {
+    font-family: 'AmericanCaptainPatrius';
+    src: url('../_fonts/AmericanCaptainPatrius/AmericanCaptainPatrius.woff') format('woff'),
+         url('../_fonts/AmericanCaptainPatrius/AmericanCaptainPatrius.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/*========== AMERICAN CAPTAIN ==========*/
+@font-face {
+    font-family: 'AmericanCaptain';
+    src: url('../_fonts/AmericanCaptain/AmericanCaptain.woff') format('woff'),
+        url('../_fonts/AmericanCaptain/AmericanCaptain.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/*========== VitroCore ==========*/
+@font-face {
+    font-family: 'VitroCore';
+    src: url('../_fonts/Vitro/VitroCore.woff') format('woff'),
+        url('../_fonts/Vitro/VitroCore.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/*========== VitroCore ==========*/
+@font-face {
+    font-family: 'VitroInspire';
+    src: url('../_fonts/Vitro/VitroInspire.woff') format('woff'),
+        url('../_fonts/Vitro/VitroInspire.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+/*========== PRETENDARD ==========*/
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Thin.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-ExtraLight.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Light.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Regular.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Medium.ttf') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-SemiBold.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Bold.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-ExtraBold.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('../_fonts/Pretendard/Pretendard-Black.woff') format('woff'),
+        url('../_fonts/Pretendard/Pretendard-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}

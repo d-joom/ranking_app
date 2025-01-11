@@ -1,0 +1,69 @@
+@charset "utf-8";
+
+/****************************************/ 
+/* Name: KIM BO REUM
+/* PART: BASE STYLE
+/* Version: 1.0
+/****************************************/
+
+html {height:100%; font-size:15px; line-height: 20px;}
+
+body {height:100%; text-align: left;font-size:15px; color:#292111; line-height:20px; font-family:'Pretendard', sans-serif; font-weight: 400; overflow: hidden;}
+body::-webkit-scrollbar {width: 13px;}
+body::-webkit-scrollbar-thumb {background-color: #292111; border-radius: 10px; background-clip: padding-box; border: 2px solid transparent}
+body::-webkit-scrollbar-track {background-color:transparent; border-radius: 30px; height: 90%}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,address,table, tbody, tfoot, thead, th, tr, tdvideo, tt{margin:0;padding:0; font-weight: 400;}
+h1,h2,h3,h4,h5,h6,input,button,textarea,select,table{font-family:'TmonMonsori','AmericanCaptainPatrius','AmericanCaptain','Pretendard', sans-serif; font-size:15px; line-height:20px; font-weight: 400;}
+img,fieldset,iframe{border:0}
+li{list-style:none;word-break:keep-all}
+img,input,select,button,textarea{vertical-align:middle}
+em,address,optgroup{font-style:normal}
+label,button{cursor:pointer}
+label{top:1px;position: relative;}
+button{margin:0;padding:0}
+a {text-decoration: none;}
+a:link,a:visited{text-decoration:none;color:#292111}
+a:hover,a:focus,a:active{text-decoration:underline;color:#292111}
+input:focus, button:focus {outline: none;}
+button img{left:-3px;}
+hr{display:none}
+legend,caption{ visibility:hidden; font-size:0; width:0; height:0; line-height:0}
+p {text-align:left; line-height:20px; font-size: 18px; word-break:keep-all; font-weight: 400;}
+tabl e{width:100%; border-spacing:0;}
+table { border-collapse: collapse; border-spacing: 0; }
+/* hidden contents */
+.skip,.hidden{position:absolute; width:0; height:0; font-size:0; line-height:0; overflow:hidden; visibility:hidden; z-index:-1}
+
+
+/* 웹접근성 - 바로가기 */
+#skip_navi {position:absolute;top:0;height:0px;width:100%;z-index:150;} 
+#skip_navi a {display:block; height:1px; width:1px; margin-bottom:-1px; overflow:hidden; text-align:center;color:#fff;white-space:nowrap;} 
+#skip_navi a:focus, 
+#skip_navi a:active {display:block;top:0;width:100%;height:20px;padding:5px 0;background:#0089d6;}
+
+/*아이폰 기본 속성 제거*/ 
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; -moz-appearance: none; appearance: none;}
+
+
+input, textarea, button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+	-webkit-appearance: none;
+}
+
+
+/* 파이어폭스 초기화 */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+/* 포커스 테두리 초기화 */
+input:focus, textarea:focus{ border:0; outline: none; }
+input[type="button"]:focus{ outline: none;}
