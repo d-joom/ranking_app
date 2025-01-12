@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { SocketContext } from '../App.js';
+import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import RankingScore from './RankingScore.js';
-import { Helmet } from 'react-helmet';
+
 
 import '../styles/_css/base.css';
 import '../styles/_css/webfont.css';
 import '../styles/_css/contents.css';
 
-import QRSample from '../styles/_img/sample/QR.png';
 import title2 from '../styles/_img/title-2.png';
 import rank1 from '../styles/_img/rank_img/1.png';
 import rank2 from '../styles/_img/rank_img/2.png';
@@ -21,13 +19,10 @@ import rank8 from '../styles/_img/rank_img/8.png';
 import rank9 from '../styles/_img/rank_img/9.png';
 import rank10 from '../styles/_img/rank_img/10.png';
 
-import title1 from '../styles/_img/title-1.png';
-import scoreFrame from '../styles/_img/score_frame.png';
-import bottomBox from '../styles/_img/bottom_box.png';
 
 import $ from 'jquery';
 
-function RankingList({ rankings, newRanking, fetchRankings }) {
+function RankingList({ rankings, fetchRankings }) {
   const [messageReceived, setMessageReceived] = useState(false); // 메시지 수신 여부 추적
     const [newScore, setNewScore] = useState(null);
     const [isNew, setIsNew] = useState(false);
@@ -36,9 +31,7 @@ function RankingList({ rankings, newRanking, fetchRankings }) {
     
 
     useEffect(() => {
-        console.log("isNew : " + isNew + "/refreshed : " + sessionStorage.getItem('refreshed'));
         if (!isNew && sessionStorage.getItem('refreshed') == 'false') {
-            console.log("aaa");
           sessionStorage.setItem('refreshed', 'true');
         fetchRankings();
         }
@@ -151,9 +144,12 @@ function RankingList({ rankings, newRanking, fetchRankings }) {
   return (
     <div>
       {isNew? 
-          <RankingScore newScore={newScore} numberImages={numberImages}/>:
+      <>
+          <RankingScore newScore={newScore} numberImages={numberImages}/>
+          <div className="scoreSecond">{scoreSecond}</div>
+      </>:
       <div id="wrapper">
-      <div id="QR_code"><img src={QRSample} alt="큐알샘플"/></div>
+      {/* <div id="QR_code"><img src={QRSample} alt="큐알샘플"/></div> */}
       <div className="contents" id="rankCont">
           <div id="title">
               <div id="challengeName"><p><img src={title2} alt="TRIGER RULK'S RAGE"/></p></div>

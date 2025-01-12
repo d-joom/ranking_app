@@ -40,7 +40,7 @@
 
 .contents#scoreCont {height: 100%; padding: 100px; padding-bottom: 30%; padding-top: 15%;} 
 
-#title #nickName {margin-top: -2rem;}
+#title #nickName {margin-top: -2rem; opacity: 0; visibility: hidden;}
 #title #nickName p {font-size: 9em;background: linear-gradient(#510000 0%, #13161d 80%);background-clip: text;-webkit-background-clip: text;color: transparent;-webkit-text-stroke: 3px #fff;line-height: 1;text-align: center;font-style: italic;margin-top: 2rem;word-break: break-all;}
 #title #nickName p span {padding-right: 3rem}
 
@@ -72,6 +72,24 @@
 	visibility: visible !important; /* 요소를 표시 */
 	animation: slideUp 0.2s ease-out forwards; /* 0.1초 동안 위로 올라오며 페이드 인 */
   }
+
+  @keyframes moveUp {
+	0% {
+		opacity: 0;
+	  transform: translateY(25%); /* 현재 위치 아래로 100% 이동 */
+	}
+	100% {
+		opacity: 1;
+	  transform: translateY(0); /* 원래 위치로 돌아옴 */
+	}
+  }
+
+  .move-up {
+	visibility: visible !important;
+	animation: moveUp 0.2s ease-out forwards; /* 애니메이션 적용 */
+  }
+
+  .scoreSecond {color:#fff; bottom:1%; right: 1%; font-size:2rem; font-family: 'AmericanCaptainPatrius';position: fixed; z-index:999;}
 
 /*=*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*==*=*=*=*=
 									
@@ -187,5 +205,7 @@
   }
 
   #form_title img {width:100%;}
-
   .form_required {margin-top:15px; color: rgba(999,999,999,0.4);}
+
+  .home li {padding: 25px 0;}
+  .home a {color:#fff; background:#990d0d; padding: 15px 30px; border-radius: 5px; margin:25px 0;}

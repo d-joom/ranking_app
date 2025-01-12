@@ -1,6 +1,6 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext  } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 import RankingForm from './components/RankingForm.js';
 import RankingList from './components/RankingList.js';
@@ -12,12 +12,12 @@ function App() {
 
   const [rankings, setRankings] = useState([]); // 랭킹 데이터 상태
   const [newRanking, setNewRanking] = useState(null);
-  const [showList, setShowList] = useState(false);  
-  const [refresh, setRefresh] = useState(false); // 새로 고침 상태
   const [socket, setSocket] = useState(null);
   const [messageSent, setMessageSent] = useState(false);  // 메시지 전송 여부 추적
+  const location = useLocation(); // 현재 경로를 가져옴
 
-
+  // 조건부로 nav를 표시
+  const showNav = location.pathname === '/';
 
    // 랭킹 데이터를 가져오는 함수
    const fetchRankings = async () => {
@@ -56,14 +56,9 @@ function App() {
         // 최신 데이터를 다시 가져옴
         await fetchRankings();
 
-        setShowList(false); // 새 데이터가 추가되면 list는 숨긴다
-        
         console.log("socket : " + JSON.stringify(newRanking));
         socket.send(JSON.stringify(newRanking));
 
-        setTimeout(() => {
-          setRefresh(false);
-        }, 1000);
       } catch (error) {
         console.error('Error adding ranking:', error);
       }
@@ -72,17 +67,6 @@ function App() {
     const goList = async() => {
       socket.send(`{"name":"goList"}`);
     }
-
-
-    // 새 랭킹 추가 후 20초 후에 리스트 보여주기
-    useEffect(() => {
-      if (newRanking) {
-        const timer = setTimeout(() => {
-          setShowList(true); // 20초 후에 리스트 페이지를 보이도록 설정
-        }, 20000); // 20초 후
-        return () => clearTimeout(timer); // timer 클린업
-      }
-    }, [newRanking]);
 
     useEffect(() => {
       // 웹소켓 연결
@@ -113,20 +97,22 @@ function App() {
     }, [messageSent]);
 
   return (
-    <SocketContext.Provider value={{ messageSent }}>
-      <Router>
+
         <div>
           {/* 네비게이션 메뉴 */}
-          {/* <nav>
-            <ul>
-              <li>
-                <Link to="/form">점수 입력</Link>
-              </li>
-              <li>
-                <Link to="/result">랭킹 목록</Link>
-              </li>
-            </ul>
-          </nav> */}
+          {showNav ? 
+          <div id="wrapper" className="home form_content">
+            <nav>
+              <ul>
+                <li>
+                  <Link to="/form">점수 입력</Link>
+                </li>
+                <li>
+                  <Link to="/result">랭킹 목록</Link>
+                </li>
+              </ul>
+            </nav>
+          </div> : <></>}
             {/* 라우트 설정 */}
             <Routes>
               <Route path="/form" element={<RankingForm onAddRanking={addRanking} goList={goList}/>} />
@@ -134,13 +120,11 @@ function App() {
               path="/result"
               key={messageSent}
               element={<>
-                <RankingList rankings={rankings} newRanking={newRanking} fetchRankings={fetchRankings}/>
+                <RankingList rankings={rankings} fetchRankings={fetchRankings}/>
               </>}
             />
             </Routes>
         </div>
-      </Router>
-    </SocketContext.Provider>
   );
 }
 
