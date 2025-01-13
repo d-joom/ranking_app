@@ -48,16 +48,17 @@ function App() {
       try {
         // 서버에 새로운 데이터 전송
         const response = await axios.post('http://localhost:5000/api/ranking', newRanking);
-        console.log(response.data.message);
-        const obj = JSON.parse(response.data.message);
-        console.log(obj);
-        // setNewRanking({name: obj.uniqueName, score:newRanking.score});
-        setNewRanking(newRanking);
+        const returnData = JSON.parse(response.data.message);
+        // console.log(returnData.uniqueName);
+        // setNewRanking({"name" : returnData.uniqueName,
+        //   "score" : returnData.score
+        // });
         // 최신 데이터를 다시 가져옴
         await fetchRankings();
 
-        console.log("socket : " + JSON.stringify(newRanking));
-        socket.send(JSON.stringify(newRanking));
+        socket.send(JSON.stringify({"name" : returnData.uniqueName,
+          "score" : returnData.score
+        }));
 
       } catch (error) {
         console.error('Error adding ranking:', error);

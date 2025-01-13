@@ -55,6 +55,19 @@ const RankingForm = ({onAddRanking, goList}) => {
     }
   };
 
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputField = document.querySelector('input');
+  
+    if (inputField) {
+      inputField.addEventListener('compositionstart', function(e) {
+        // 한영 전환 방지
+        e.preventDefault();
+      });
+    } else {
+      console.error('폼이나 입력 필드를 찾을 수 없습니다.');
+    }
+  });
+
   return (
     <div id = "wrapper">
       <div id="form_title">
@@ -84,7 +97,7 @@ const RankingForm = ({onAddRanking, goList}) => {
         <button type="submit">SUBMIT</button>
       </form>
       <p className="form_required">※ 사용자이름은 한글 최대 4자, 점수는 0~999까지 입력 가능</p>
-      {message && <p>{message}</p>}
+      {message && <p style={{marginTop:'10px'}}>{message}</p>}
       <button className="goListBtn" onClick={goList}>Go to list</button>
       </div>
       

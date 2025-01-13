@@ -14,8 +14,14 @@ function RankingScore({newScore, numberImages}) {
 
     const [loaded, setLoaded] = useState(false);
     const [animate, setAnimate] = useState(false);
+    const [inputName, setInputName] = useState(newScore.name);
     // const [qrCodeUrl, setQrCodeUrl] = useState(null);
     const captureRef = useRef(null); // 화면을 캡처할 DOM 요소
+
+    useEffect(() => {
+      const name = newScore.name.replace(/[a-zA-Z]/g, '');
+      setInputName(name);
+    },[]);
   
     // useEffect(() => {
     //   const captureScreen = async () => {
@@ -88,7 +94,7 @@ function RankingScore({newScore, numberImages}) {
 		<div className="contents" id="scoreCont">
 			<div id="title">
 				<div id="challengeName"><p><img src={title1} alt="TRIGER RULK'S RAGE"/></p></div>
-				<div id="nickName" className={`Font-V_Core ${animate ? 'move-up' : ''}`}><p><span>캡틴</span>{newScore.name}</p></div>
+				<div id="nickName" className={`Font-V_Core ${animate ? 'move-up' : ''}`}><p><span>캡틴</span>{inputName}</p></div>
 			</div>
 			//타이틀
       {loaded?

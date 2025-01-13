@@ -28,18 +28,14 @@ function RankingList({ rankings, fetchRankings }) {
     const [isNew, setIsNew] = useState(false);
     const [scoreSecond, setScoreSecond] = useState(0);
     const [numberImages, setNumberImages] = useState([]);
+    const [fadeOut, setFadeOut] = useState(false);
     
-
-    useEffect(() => {
+  useEffect(() => {
         if (!isNew && sessionStorage.getItem('refreshed') == 'false') {
           sessionStorage.setItem('refreshed', 'true');
         fetchRankings();
         }
-      }, [isNew]);
-
-    useEffect(() => {
-        console.log(rankings);
-    },[rankings]);
+   }, [isNew]);
 
   useEffect(() => {
     if(newScore != null) {
@@ -71,6 +67,12 @@ function RankingList({ rankings, fetchRankings }) {
     $(document).ready(function () {
       $('.list').addClass('up');
     });
+    // 5초 후 애니메이션 클래스 제거
+    const timer = setTimeout(() => {
+      setFadeOut(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
     }, [rankings]); // 빈 배열은 useEffect가 처음 렌더링될 때만 실행되게 함
 
     const getRankingsWithCorrectedRanks = (rankings) => {
@@ -120,6 +122,7 @@ function RankingList({ rankings, fetchRankings }) {
                 sessionStorage.setItem('refreshed', 'false');
             } else {
                 setNewScore(obj);
+                setFadeOut(false);
             }
         } else {
             console.error('data.content.data is undefined');
@@ -155,39 +158,48 @@ function RankingList({ rankings, fetchRankings }) {
               <div id="challengeName"><p><img src={title2} alt="TRIGER RULK'S RAGE"/></p></div>
           </div>
           <div id="rank_list">
-            {rankingsWithRanks.map((ranking, index) => (
-            <div className={`list ${index < 3 ? "top3" : ""}`} id={`rank${ranking.rank}`} key={ranking.rank}>
+          {Array.from({ length: 10 }).map((_, index) => {
+            // data가 없으면 기본값으로 빈 항목을 추가하여 10개를 채운다.
+            const ranking = rankingsWithRanks[index] || { 
+              rank: index + 1, 
+              Name: '', 
+              Score: '0' 
+            };
+
+            return (
+              <div className={`list ${index < 3 ? "top3" : ""}`} id={`rank${index + 1}`} key={index + 1}>
                 <div className="number">
-                {ranking.rank === 1 ? (
+                  {ranking.rank === 1 ? (
                     <img src={rank1} alt="1st" />
-                ) : ranking.rank === 2 ? (
+                  ) : ranking.rank === 2 ? (
                     <img src={rank2} alt="2nd" />
-                ) : ranking.rank === 3 ? (
+                  ) : ranking.rank === 3 ? (
                     <img src={rank3} alt="3rd" />
-                ) : ranking.rank === 4 ? (
+                  ) : ranking.rank === 4 ? (
                     <img src={rank4} alt="4th" />
-                ) : ranking.rank === 5 ? (
+                  ) : ranking.rank === 5 ? (
                     <img src={rank5} alt="5th" />
-                ) : ranking.rank === 6 ? (
+                  ) : ranking.rank === 6 ? (
                     <img src={rank6} alt="6th" />
-                ) : ranking.rank === 7 ? (
+                  ) : ranking.rank === 7 ? (
                     <img src={rank7} alt="7th" />
-                ) : ranking.rank === 8 ? (
+                  ) : ranking.rank === 8 ? (
                     <img src={rank8} alt="8th" />
-                ) : ranking.rank === 9 ? (
+                  ) : ranking.rank === 9 ? (
                     <img src={rank9} alt="9th" />
-                ) : ranking.rank === 10 ? (
+                  ) : ranking.rank === 10 ? (
                     <img src={rank10} alt="10th" />
-                ) : (
+                  ) : (
                     <></>
-                )}
+                  )}
                 </div>
-                <div className="name">
-                {ranking ? <><span>캡틴</span>{ranking.Name}</> : ''}
+                <div className = 'name'>
+                  {ranking.Name ? <div className={newScore !== null && newScore.name == ranking.Name ?  fadeOut ? 'animate-off' : 'animate-rank-in' : ''}><span>캡틴</span>{ranking.Name}</div>: '캡틴'}
                 </div>
-                <div className="score">{ranking ? ranking.Score : '0'}</div>
-            </div>
-            ))}
+                <div className={`score ${newScore !== null && newScore.name == ranking.Name ? fadeOut ? 'animate-off' : 'animate-rank-in' : ''}`}>{ranking.Score}</div>
+              </div>
+            );
+          })}
         </div>
       </div>
   </div>}

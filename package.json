@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "ranking_app",
   "version": "1.0.0",
   "main": "server.js",
   "bin": "server.js",
