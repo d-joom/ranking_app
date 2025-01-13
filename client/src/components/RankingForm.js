@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import title1 from '../styles/_img/title-1.png';
 
 const RankingForm = ({onAddRanking, goList}) => {
   const [userName, setUserName] = useState('');
   const [userScore, setUserScore] = useState(''); // 점수 상태 추가
   const [message, setMessage] = useState('');
+  const usernameRef = useRef(null);
 
   const handleUserInteraction = () => {
     setTimeout(() => {
@@ -38,6 +39,8 @@ const RankingForm = ({onAddRanking, goList}) => {
     }
 
     handleUserInteraction();
+    // 폼 제출 후 사용자 이름 input에 포커스
+    usernameRef.current.focus();
   };
 
   const handleUserNameChange = (e) => {
@@ -55,19 +58,6 @@ const RankingForm = ({onAddRanking, goList}) => {
     }
   };
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const inputField = document.querySelector('input');
-  
-    if (inputField) {
-      inputField.addEventListener('compositionstart', function(e) {
-        // 한영 전환 방지
-        e.preventDefault();
-      });
-    } else {
-      console.error('폼이나 입력 필드를 찾을 수 없습니다.');
-    }
-  });
-
   return (
     <div id = "wrapper">
       <div id="form_title">
@@ -82,6 +72,7 @@ const RankingForm = ({onAddRanking, goList}) => {
             value={userName}
             onChange={handleUserNameChange}
             placeholder="이름 입력"
+            ref={usernameRef}
             maxLength={4}
           />
         </div>
