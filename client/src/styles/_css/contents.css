@@ -44,8 +44,8 @@
 #title #nickName p {font-size: 9em;background: linear-gradient(#510000 0%, #13161d 80%);background-clip: text;-webkit-background-clip: text;color: transparent;-webkit-text-stroke: 3px #fff;line-height: 1;text-align: center;font-style: italic;margin-top: 2rem;word-break: break-all;}
 #title #nickName p span {padding-right: 3rem}
 
-#score {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -65%);display:flex;justify-content:center;width: 90%;opacity: 0; /* 기본적으로 보이지 않게 설정 */
-	visibility: hidden; /* 깜빡임 방지 */}
+#score {position: fixed; top: 50%;left: 50%;transform: translate(-50%, -65%);display:flex;justify-content:center;width: 90%;opacity: 0; /* 기본적으로 보이지 않게 설정 */
+	visibility: hidden; /* 깜빡임 방지 */ }
 #score .box {position: relative; width: 30%; overflow: hidden; text-align: center;}
 #score .box .frame {width: 100%;}
 #score .box .frame img {width: 100%; display: block;}

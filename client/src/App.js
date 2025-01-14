@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 
 import RankingForm from './components/RankingForm.js';
 import RankingList from './components/RankingList.js';
+import RankingScore from './components/RankingScore.js';
+import CaptureScore from './components/CaptureScore.js';
 
 // 상태를 관리할 Context 생성
 export const SocketContext = createContext();
@@ -124,6 +126,7 @@ function App() {
                 <RankingList rankings={rankings} fetchRankings={fetchRankings}/>
               </>}
             />
+              <Route path="/capture" element={<CaptureScore/>} />
             </Routes>
         </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import RankingScore from './RankingScore.js';
-
+import axios from 'axios';
 
 import '../styles/_css/base.css';
 import '../styles/_css/webfont.css';
@@ -29,6 +29,7 @@ function RankingList({ rankings, fetchRankings }) {
     const [scoreSecond, setScoreSecond] = useState(0);
     const [numberImages, setNumberImages] = useState([]);
     const [fadeOut, setFadeOut] = useState(false);
+    const [isCaptured, setIsCaptured] = useState(false);
     
   useEffect(() => {
         if (!isNew && sessionStorage.getItem('refreshed') == 'false') {
@@ -53,11 +54,10 @@ function RankingList({ rankings, fetchRankings }) {
   useEffect(() => {
     //초가 0보다 크면 1초마다 감소
     if(isNew && scoreSecond > 0) {
-        console.log("score!second!" + scoreSecond);
         const timer = setTimeout(() => setScoreSecond(scoreSecond - 1), 1000);
         return () => clearTimeout(timer);
     } else if(isNew && scoreSecond == 0) {
-        setIsNew(false);
+        // setIsNew(false);
         sessionStorage.setItem('refreshed', 'false');
     }
   }, [scoreSecond]);
@@ -123,6 +123,7 @@ function RankingList({ rankings, fetchRankings }) {
             } else {
                 setNewScore(obj);
                 setFadeOut(false);
+                setIsCaptured(false);
             }
         } else {
             console.error('data.content.data is undefined');
@@ -143,6 +144,37 @@ function RankingList({ rankings, fetchRankings }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (isNew && !isCaptured) {
+      console.log("capture start");
+      // isNew가 true일 때만 캡쳐 요청
+      setTimeout(async () => {
+
+        // 객체를 JSON 문자열로 변환
+        const newScoreString = JSON.stringify(newScore);
+        const imgString = JSON.stringify(numberImages);
+
+        // URL 파라미터로 데이터 전달
+        const url = `http://localhost:3000/capture?newScore=${encodeURIComponent(newScoreString)}&img=${encodeURIComponent(imgString)}`;
+        
+        try {
+          const response = await axios.post('http://localhost:5000/capture', {
+            url: url
+          }, {
+            headers: {
+              'Content-Type': 'application/json',  // Content-Type 설정
+            }
+          });
+
+          console.log('Screenshot received', response.data);
+          setIsCaptured(true);  // 캡쳐 완료 플래그 설정
+        } catch (error) {
+          console.error('Error capturing the page:', error);
+        }
+        console.log("capture end");
+      }, 0); // 1초 지연
+    }
+  }, [isNew, isCaptured]); // isNew나 isCaptured가 변경되면 실행
 
   return (
     <div>
