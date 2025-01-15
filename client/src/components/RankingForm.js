@@ -70,6 +70,8 @@ const RankingForm = ({onAddRanking, goList}) => {
           <input
             type="text"
             value={userName}
+            inputMode="ko"
+            lang="ko"
             onChange={handleUserNameChange}
             placeholder="이름 입력"
             ref={usernameRef}

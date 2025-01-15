@@ -23,6 +23,9 @@
     "assets": [
       "client/build/**/*",
       "node_modules/figlet/fonts/slant.flf"
+    ],
+    "targets": [
+      "win-x64" 
     ]
   }
 }
