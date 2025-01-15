@@ -13,7 +13,6 @@ export const SocketContext = createContext();
 function App() {
 
   const [rankings, setRankings] = useState([]); // 랭킹 데이터 상태
-  const [newRanking, setNewRanking] = useState(null);
   const [socket, setSocket] = useState(null);
   const [messageSent, setMessageSent] = useState(false);  // 메시지 전송 여부 추적
   const location = useLocation(); // 현재 경로를 가져옴
@@ -85,6 +84,7 @@ function App() {
       // 웹소켓 연결이 종료되었을 때의 처리
       ws.addEventListener('close', () => {
         console.log('WebSocket connection closed (App.js)');
+        alert("WebSocket connection closed. ")
       });
   
       return () => {

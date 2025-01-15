@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import RankingScore from './RankingScore.js';
 import axios from 'axios';
+import QRCode from 'qrcode';
 
 import '../styles/_css/base.css';
 import '../styles/_css/webfont.css';
@@ -30,7 +31,10 @@ function RankingList({ rankings, fetchRankings }) {
     const [numberImages, setNumberImages] = useState([]);
     const [fadeOut, setFadeOut] = useState(false);
     const [isCaptured, setIsCaptured] = useState(false);
-    
+    const [qrCode, setQrCode] = useState(null);
+    const [imgUrl, setImgUrl] = useState(null);
+    const [isQrLoading, setIsQrLoading] = useState(false);
+
   useEffect(() => {
         if (!isNew && sessionStorage.getItem('refreshed') == 'false') {
           sessionStorage.setItem('refreshed', 'true');
@@ -47,6 +51,8 @@ function RankingList({ rankings, fetchRankings }) {
           ];
         setNumberImages(numImgs);
         setIsNew(true);
+        setIsQrLoading(true);
+        setQrCode('');
         setScoreSecond(20);
     }
   },[newScore]);
@@ -57,7 +63,8 @@ function RankingList({ rankings, fetchRankings }) {
         const timer = setTimeout(() => setScoreSecond(scoreSecond - 1), 1000);
         return () => clearTimeout(timer);
     } else if(isNew && scoreSecond == 0) {
-        // setIsNew(false);
+        setIsNew(false);
+        setIsQrLoading(false);
         sessionStorage.setItem('refreshed', 'false');
     }
   }, [scoreSecond]);
@@ -115,7 +122,6 @@ function RankingList({ rankings, fetchRankings }) {
         const data = JSON.parse(event.data);
         if (data.content && data.content.data) {
             const messageContent = Buffer.from(data.content.data).toString('utf-8');
-            console.log('Message content:', messageContent);
             const obj = JSON.parse(messageContent);
             if(obj.name === 'goList'){
                 setIsNew(false);
@@ -144,9 +150,17 @@ function RankingList({ rankings, fetchRankings }) {
     };
   }, []);
 
+    useEffect(() => {
+      if (imgUrl != null) {
+        QRCode.toDataURL(imgUrl)
+          .then((url) => setQrCode(url))
+          .then(setIsQrLoading(false))
+          .catch((err) => console.error(err));
+      }
+    }, [imgUrl]);
+
   useEffect(() => {
     if (isNew && !isCaptured) {
-      console.log("capture start");
       // isNew가 true일 때만 캡쳐 요청
       setTimeout(async () => {
 
@@ -155,7 +169,7 @@ function RankingList({ rankings, fetchRankings }) {
         const imgString = JSON.stringify(numberImages);
 
         // URL 파라미터로 데이터 전달
-        const url = `http://localhost:3000/capture?newScore=${encodeURIComponent(newScoreString)}&img=${encodeURIComponent(imgString)}`;
+        const url = `http://localhost:5000/capture?newScore=${encodeURIComponent(newScoreString)}&img=${encodeURIComponent(imgString)}`;
         
         try {
           const response = await axios.post('http://localhost:5000/capture', {
@@ -166,25 +180,24 @@ function RankingList({ rankings, fetchRankings }) {
             }
           });
 
-          console.log('Screenshot received', response.data);
           setIsCaptured(true);  // 캡쳐 완료 플래그 설정
+          setImgUrl(response.data.url);
         } catch (error) {
           console.error('Error capturing the page:', error);
         }
-        console.log("capture end");
       }, 0); // 1초 지연
     }
   }, [isNew, isCaptured]); // isNew나 isCaptured가 변경되면 실행
 
   return (
     <div>
+      {qrCode != null ? isQrLoading ? <div className="loader"></div> : <div id="QR_code"><img src={qrCode} alt="큐알샘플"/></div> : <></>}
       {isNew? 
       <>
           <RankingScore newScore={newScore} numberImages={numberImages}/>
           <div className="scoreSecond">{scoreSecond}</div>
       </>:
       <div id="wrapper">
-      {/* <div id="QR_code"><img src={QRSample} alt="큐알샘플"/></div> */}
       <div className="contents" id="rankCont">
           <div id="title">
               <div id="challengeName"><p><img src={title2} alt="TRIGER RULK'S RAGE"/></p></div>

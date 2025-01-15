@@ -8,7 +8,6 @@ import RankingScore from './RankingScore';
 
 
 function CaptureScore() {
-  const location = useLocation();
   const [newScore, setNewScore] = useState(null);
   const [img, setImg] = useState([]);
 
@@ -19,7 +18,6 @@ function CaptureScore() {
     // 'newScore'와 'img' 파라미터 값을 가져와서 파싱
     const newScoreParam = queryParams.get('newScore');
     const imgParam = queryParams.get('img');
-    console.log(newScoreParam, imgParam);
 
     // JSON 문자열을 객체로 변환
     if (newScoreParam) {
