@@ -21,9 +21,9 @@ app.use(express.json());
 
 // AWS S3 설정
 const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: process.env.AWS_REGION,
+  accessKeyId: "",
+  secretAccessKey: "",
+  region: "",
 });
 
 const BUCKET_NAME = 'ranking-app';
@@ -44,7 +44,7 @@ app.post('/capture', async (req, res) => {
   try {
     // Puppeteer로 페이지 캡처
     const browser = await puppeteer.launch({
-      executablePath: path.join(__dirname, 'node_modules/puppeteer/.local-chromium/...' /* 적절한 경로 설정 */),
+      executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',  // 크롬 설치 경로를 정확히 지정
     });
     const page = await browser.newPage();
     await page.goto(decodedUrl, { waitUntil: 'networkidle2' });
