@@ -28,6 +28,7 @@ const s3 = new AWS.S3({
 
 const BUCKET_NAME = 'ranking-app';
 
+
 // 화면 캡처 후 S3에 업로드하는 API
 app.post('/capture', async (req, res) => {
 
@@ -42,7 +43,9 @@ app.post('/capture', async (req, res) => {
 
   try {
     // Puppeteer로 페이지 캡처
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: path.join(__dirname, 'node_modules/puppeteer/.local-chromium/...' /* 적절한 경로 설정 */),
+    });
     const page = await browser.newPage();
     await page.goto(decodedUrl, { waitUntil: 'networkidle2' });
 
@@ -96,17 +99,12 @@ wss.on('connection', (ws) => {
 const isPkg = typeof process.pkg !== 'undefined';
 
 // 클라이언트 빌드 폴더 경로 설정
-// const staticPath = isPkg
-//   ? path.join(path.dirname(process.execPath), 'client/build')  // 패키징된 실행 파일 내에서 상대 경로
-//   : path.join(__dirname, 'client/build');  // 로컬 개발 환경에서는 상대경로 사용
 const staticPath = path.join(__dirname, 'client/build');
 
 // CSV 파일 경로 설정
 const csvFilePath = isPkg
   ? path.join(path.dirname(process.execPath), 'data.csv')  // 패키징된 실행 파일 내에서 상대 경로
   : path.join(__dirname, 'data.csv');  // 로컬 개발 환경에서는 상대경로 사용
-
-// const csvFilePath = path.join(path.dirname(process.execPath), 'data.csv');
 
 // CSV 파일이 없으면 자동으로 생성
 if (!fs.existsSync(csvFilePath)) {

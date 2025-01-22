@@ -22,7 +22,8 @@
   "pkg": {
     "assets": [
       "client/build/**/*",
-      "node_modules/figlet/fonts/slant.flf"
+      "node_modules/figlet/fonts/slant.flf",
+      "node_modules/puppeteer/.local-chromium/**/*"
     ],
     "targets": [
       "win-x64" 

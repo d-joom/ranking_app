@@ -33,6 +33,8 @@ const RankingForm = ({onAddRanking, goList}) => {
       onAddRanking(newRanking);
       setUserName('');
       setUserScore('');
+       // 한글 입력기로 유지
+       usernameRef.current.setAttribute('lang', 'ko');
     } catch (error) {
       console.error('Error submitting ranking:', error);
       setMessage('랭킹 제출 중 오류가 발생했습니다.');
@@ -40,7 +42,7 @@ const RankingForm = ({onAddRanking, goList}) => {
 
     handleUserInteraction();
     // 폼 제출 후 사용자 이름 input에 포커스
-    usernameRef.current.focus();
+    // usernameRef.current.focus();
   };
 
   const handleUserNameChange = (e) => {

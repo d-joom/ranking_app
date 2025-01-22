@@ -53,7 +53,7 @@ function RankingList({ rankings, fetchRankings }) {
         setIsNew(true);
         setIsQrLoading(true);
         setQrCode('');
-        setScoreSecond(20);
+        setScoreSecond(30);
     }
   },[newScore]);
 
@@ -191,9 +191,9 @@ function RankingList({ rankings, fetchRankings }) {
 
   return (
     <div>
-      {qrCode != null ? isQrLoading ? <div className="loader"></div> : <div id="QR_code"><img src={qrCode} alt="큐알샘플"/></div> : <></>}
       {isNew? 
       <>
+          {qrCode != null ? isQrLoading ? <div className="loader"></div> : <div id="QR_code"><img src={qrCode} alt="큐알샘플"/></div> : <></>}
           <RankingScore newScore={newScore} numberImages={numberImages}/>
           <div className="scoreSecond">{scoreSecond}</div>
       </>:
@@ -239,7 +239,7 @@ function RankingList({ rankings, fetchRankings }) {
                   )}
                 </div>
                 <div className = 'name'>
-                  {ranking.Name ? <div className={newScore !== null && newScore.name == ranking.Name ?  fadeOut ? 'animate-off' : 'animate-rank-in' : ''}><span>캡틴</span>{ranking.Name}</div>: '캡틴'}
+                  {ranking.Name ? <div className={newScore !== null && newScore.name == ranking.Name ?  fadeOut ? 'animate-off' : 'animate-rank-in' : ''}>{ranking.Name}</div>: ''}
                 </div>
                 <div className={`score ${newScore !== null && newScore.name == ranking.Name ? fadeOut ? 'animate-off' : 'animate-rank-in' : ''}`}>{ranking.Score}</div>
               </div>
