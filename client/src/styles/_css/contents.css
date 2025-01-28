@@ -201,14 +201,24 @@
 	font-size:1.4rem;
   }
   
-  .form_wrap input {
+  .form_wrap input, .form_wrap select {
 	flex: 1; /* 남은 공간을 채움 */
-	padding: 15px;
+	padding: 15px 35px 15px 15px;
 	border: none;
 	background: rgba(0,0,0,0.5);
 	color: white;
 	border-radius: 5px;
 	font-size: 1.4rem;
+  }
+
+  .form_wrap select {
+	appearance: none; /* 모든 브라우저의 기본 스타일 제거 */
+	-webkit-appearance: none; /* WebKit 기반 브라우저 (크롬, 사파리) */
+	-moz-appearance: none; /* Firefox */
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="%23fff" stroke-width="1.5"/></svg>');
+	background-repeat: no-repeat;
+	background-position: calc(100% - 25px) center; /* 화살표 위치 조정 */
+	background-size: 1rem;
   }
   
   button {
@@ -272,3 +282,6 @@
 	  transform: rotate(360deg);
 	}
   }
+
+ .list .venue {font-family: 'VitroInspire'; font-size:2.2rem; padding-left:3%; opacity:0.5;}
+ .list.top3 .venue {font-size:2.5rem;}

@@ -65,5 +65,5 @@ input[type=number] {
 
 
 /* 포커스 테두리 초기화 */
-input:focus, textarea:focus{ border:0; outline: none; }
+:focus, textarea:focus{ border:0; outline: none; }
 input[type="button"]:focus{ outline: none;}

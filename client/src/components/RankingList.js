@@ -53,7 +53,7 @@ function RankingList({ rankings, fetchRankings }) {
         setIsNew(true);
         setIsQrLoading(true);
         setQrCode('');
-        setScoreSecond(30);
+        setScoreSecond(40);
     }
   },[newScore]);
 
@@ -241,6 +241,7 @@ function RankingList({ rankings, fetchRankings }) {
                 <div className = 'name'>
                   {ranking.Name ? <div className={newScore !== null && newScore.name == ranking.Name ?  fadeOut ? 'animate-off' : 'animate-rank-in' : ''}>{ranking.Name}</div>: ''}
                 </div>
+                <div className= 'venue'>{ranking.Venue ? ranking.Venue : ''}</div>
                 <div className={`score ${newScore !== null && newScore.name == ranking.Name ? fadeOut ? 'animate-off' : 'animate-rank-in' : ''}`}>{ranking.Score}</div>
               </div>
             );

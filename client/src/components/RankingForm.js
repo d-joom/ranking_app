@@ -5,6 +5,7 @@ const RankingForm = ({onAddRanking, goList}) => {
   const [userName, setUserName] = useState('');
   const [userScore, setUserScore] = useState(''); // 점수 상태 추가
   const [message, setMessage] = useState('');
+  const [venue, setVenue] = useState('');
   const usernameRef = useRef(null);
 
   const handleUserInteraction = () => {
@@ -17,8 +18,16 @@ const RankingForm = ({onAddRanking, goList}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!userName || !userScore) {
-      setMessage('사용자 이름과 점수를 입력해주세요.');
+    if (!userName) {
+      setMessage('사용자 이름을 입력해주세요.');
+      return;
+    }
+    if (!userScore) {
+      setMessage('사용자 점수를 입력해주세요.');
+      return;
+    }
+    if (!venue) {
+      setMessage('장소선택을 해주세요.');
       return;
     }
 
@@ -26,6 +35,7 @@ const RankingForm = ({onAddRanking, goList}) => {
       const newRanking = {
         name: userName,
         score: parseInt(userScore, 10),
+        venue: venue,
         date: new Date().toISOString(), // 현재 날짜
       };
   
@@ -60,6 +70,10 @@ const RankingForm = ({onAddRanking, goList}) => {
     }
   };
 
+  const handleVenueChange = (e) => {
+    setVenue(e.target.value);
+  };
+
   return (
     <div id = "wrapper">
       <div id="form_title">
@@ -88,6 +102,18 @@ const RankingForm = ({onAddRanking, goList}) => {
             placeholder="점수 입력"
             onChange={handleScoreChange}
           />
+        </div>
+        <div>
+          <label>Venue</label>
+          <select value={venue} onChange={handleVenueChange}>
+            <option value="" style={{color:'rgba(0,0,0,0.5)'}} disabled>
+              장소선택
+            </option>
+            <option value="파미에스테이션">파미에스테이션</option>
+            <option value="롯데시네마 월드타워">롯데시네마 월드타워</option>
+            <option value="스타필드 하남">스타필드 하남</option>
+            <option value="CGV 용산">CGV 용산</option>
+          </select>
         </div>
         <button type="submit">SUBMIT</button>
       </form>

@@ -112,14 +112,14 @@ if (!fs.existsSync(csvFilePath)) {
   ws.write('\uFEFF');
   const csvStream = fastcsv.format({ headers: true, quote: '"' }); // 헤더를 첫 번째로 추가
   csvStream.pipe(ws);
-  csvStream.write(['Name', 'Score', 'Date']); // 헤더 쓰기
+  csvStream.write(['Name', 'Score', 'Venue', 'Date']); // 헤더 쓰기
   csvStream.end(); // 파일을 종료
 }
 
 // POST: 사용자 입력 데이터 업데이트
 app.post('/api/ranking', (req, res) => {
     
-    const { name, score, date } = req.body;
+    const { name, score, venue, date } = req.body;
   
     if (!name || !score) {
       return res.status(400).json({ message: '이름과 점수를 모두 입력해주세요.' });
@@ -156,7 +156,7 @@ app.post('/api/ranking', (req, res) => {
 
     console.log(`\n{name: '${uniqueName}',score: '${score}',date: '${koreaTime}'}`);
 
-    const data = `\n${uniqueName},${score},${koreaTime}`
+    const data = `\n${uniqueName},${score},${venue},${koreaTime}`
 
     // 파일에 데이터 추가
     fs.appendFile(csvFilePath, data, 'utf8', (err) => {
