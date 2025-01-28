@@ -283,5 +283,5 @@
 	}
   }
 
- .list .venue {font-family: 'VitroInspire'; font-size:2.2rem; padding-left:3%; opacity:0.5;}
- .list.top3 .venue {font-size:2.5rem;}
+ .list .venue {font-family: 'VitroInspire'; font-size:2.5rem; padding-left:3%; opacity:0.5;}
+ /* .list.top3 .venue {font-size:2.5rem;} */
